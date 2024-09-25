@@ -94,25 +94,17 @@ h1{
 align-items: center;
 color: #000;
 }
-
-
-@media only screen and (max-width: 400px) {
-    .chat-container {
-        width: 344px !important;
-        margin: auto;
-        background: white;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-    .ai-message {
-        background-color: #A8121C;
-        color: #fff;
-        padding: 10px;
-        border-radius: 5px;
-        margin: 5px 0;
-        align-self: flex-end;
-        max-width: 80%;
-        font-size: 15px;
-    }
+   /* Ajoutez quelques styles pour les questions */
+   .question-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
 }
+.question-button:hover {
+    background-color: #0056b3;
+}
+
