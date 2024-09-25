@@ -53,16 +53,22 @@
 
     <div class="question-list">
         <h2>Questions fréquentes :</h2>
+        <button class="question-button" onclick="askQuestion('C\'est quoi une carte OWO?')">C'est quoi une carte OWO?</button>
+        <button class="question-button" onclick="askQuestion('A quoi me sert ma carte OWO?')">A quoi me sert ma carte OWO?</button>
         <button class="question-button" onclick="askQuestion('Quels types de services financiers proposez-vous ?')">Quels types de services financiers proposez-vous ?</button>
         <button class="question-button" onclick="askQuestion('Comment évaluez-vous la situation financière d\'un client ?')">Comment évaluez-vous la situation financière d'un client ?</button>
         <button class="question-button" onclick="askQuestion('Quelles sont vos tarifications pour les services de conseil financier ?')">Quelles sont vos tarifications pour les services de conseil financier ?</button>
         <button class="question-button" onclick="askQuestion('Offrez-vous des services de planification fiscale ?')">Offrez-vous des services de planification fiscale ?</button>
         <button class="question-button" onclick="askQuestion('Comment garantissez-vous la sécurité des données de vos clients ?')">Comment garantissez-vous la sécurité des données de vos clients ?</button>
-        <button class="question-button" onclick="askQuestion('Qu\'est-ce qu\'une carte OWO ?')">Qu'est-ce qu'une carte OWO ?</button>
-        <button class="question-button" onclick="askQuestion('Quelles sont les fonctionnalités de la carte OWO ?')">Quelles sont les fonctionnalités de la carte OWO ?</button>
     </div>
 
     <script>
+        // Définir la fonction askQuestion à l'extérieur de DOMContentLoaded
+        function askQuestion(question) {
+            userInput.value = question;
+            sendButton.click();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             console.log("DOM entièrement chargé et analysé.");
 
@@ -88,6 +94,14 @@
                     answer: "Nous offrons une gamme complète de services financiers, y compris la gestion de patrimoine, le courtage en prêts, le conseil en investissement, l’assurance vie et la planification fiscale."
                 },
                 {
+                    question: "A quoi me sert ma carte OWO?",
+                    answer: "Paiements sécurisés : Les utilisateurs peuvent effectuer des paiements en ligne ou en magasin avec un haut niveau de sécurité. Programmes de fidélité : Les utilisateurs peuvent accumuler des points ou des récompenses lors de leurs achats, qu'ils peuvent ensuite échanger contre des offres ou des réductions. Intégration de la technologie blockchain : Cela permet des transactions transparentes et sécurisées, tout en protégeant les données des utilisateurs. Facilité d'utilisation : Une interface conviviale qui permet aux utilisateurs de gérer leurs finances et d'accéder à leurs récompenses facilement."
+                },
+                {
+                    question: "C'est quoi une carte OWO",
+                    answer: "OWO Cards fait référence à une carte de paiement ou à un système de carte de fidélité proposé par l'entreprise OWO, qui combine souvent des fonctionnalités liées aux services financiers et à la technologie blockchain."
+                },
+                {
                     question: "Comment évaluez-vous la situation financière d'un client ?",
                     answer: "Nous effectuons une analyse complète de la situation financière de nos clients en examinant leurs revenus, leurs dépenses, leurs actifs et leurs passifs."
                 },
@@ -102,14 +116,6 @@
                 {
                     question: "Comment garantissez-vous la sécurité des données de vos clients ?",
                     answer: "Nous mettons en œuvre des mesures de sécurité robustes, y compris le cryptage des données."
-                },
-                {
-                    question: "Qu'est-ce qu'une carte OWO ?",
-                    answer: "La carte OWO est une solution de paiement innovante qui facilite les transactions financières et offre divers avantages à ses utilisateurs."
-                },
-                {
-                    question: "Quelles sont les fonctionnalités de la carte OWO ?",
-                    answer: "La carte OWO permet des paiements sécurisés en ligne, des retraits d'argent, et offre des fonctionnalités telles que la gestion des dépenses, les remises et les offres exclusives."
                 }
             ];
 
@@ -122,11 +128,6 @@
                 "je suis reconnaissant",
                 "merci pour cela"
             ];
-
-            function askQuestion(question) {
-                userInput.value = question;
-                sendButton.click();
-            }
 
             sendButton.addEventListener('click', function() {
                 if (userInput.value.trim() === '') {
