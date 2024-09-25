@@ -1,154 +1,119 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot IA</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Ajoutez quelques styles pour les questions */
-        .question-button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px;
-            margin: 5px;
-            cursor: pointer;
-            border-radius: 5px;
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const aiWelcomeMessage = document.createElement('div');
+        aiWelcomeMessage.textContent = "OWO : En quoi puis-je vous aider ?";
+        aiWelcomeMessage.classList.add('ai-message');
+        document.getElementById('chatBox').appendChild(aiWelcomeMessage);
+        document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+    });
+
+    const qaPairs = [
+        {
+            question: "Quels types de services financiers proposez-vous ?",
+            answer: "Nous offrons une gamme complète de services financiers, y compris la gestion de patrimoine, le courtage en prêts, le conseil en investissement, l’assurance vie et la planification fiscale."
+        },
+        {
+            question: "Comment évaluez-vous la situation financière d'un client ?",
+            answer: "Nous effectuons une analyse complète de la situation financière de nos clients en examinant leurs revenus, leurs dépenses, leurs actifs et leurs passifs."
+        },
+        {
+            question: "Quelles sont vos tarifications pour les services de conseil financier ?",
+            answer: "Nos frais varient en fonction des services fournis et nous nous engageons à être transparents sur toutes nos tarifications."
+        },
+        {
+            question: "Offrez-vous des services de planification fiscale ?",
+            answer: "Oui, nous proposons des services de planification fiscale pour aider nos clients à optimiser leur situation fiscale."
+        },
+        {
+            question: "Comment garantissez-vous la sécurité des données de vos clients ?",
+            answer: "Nous mettons en œuvre des mesures de sécurité robustes, y compris le cryptage des données."
         }
-        .question-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
+    ];
 
-    <h1>Votre assistant OWO</h1>
-    <div class="chat-container">
-        <div class="chat-box" id="chatBox"></div>
-        <div class="input-container">
-            <input type="text" id="userInput" placeholder="Tapez votre message..." />
-            <button id="sendButton">Envoyer</button>
-        </div>
-        <div class="typing" id="typingIndicator" style="display: none;">
-            <span>Votre assistant OWO est en train d'écrire</span>
-        </div>
-    </div>
+    const gratitudeExpressions = [
+        "merci",
+        "je vous remercie",
+        "merci beaucoup",
+        "c'est gentil",
+        "merci pour votre aide",
+        "je suis reconnaissant",
+        "merci pour cela"
+    ];
 
-    <div class="question-list">
-        <h2>Questions fréquentes :</h2>
-        <button class="question-button" onclick="askQuestion('Quels types de services financiers proposez-vous ?')">Quels types de services financiers proposez-vous ?</button>
-        <button class="question-button" onclick="askQuestion('Comment évaluez-vous la situation financière d\'un client ?')">Comment évaluez-vous la situation financière d'un client ?</button>
-        <button class="question-button" onclick="askQuestion('Quelles sont vos tarifications pour les services de conseil financier ?')">Quelles sont vos tarifications pour les services de conseil financier ?</button>
-        <button class="question-button" onclick="askQuestion('Offrez-vous des services de planification fiscale ?')">Offrez-vous des services de planification fiscale ?</button>
-        <button class="question-button" onclick="askQuestion('Comment garantissez-vous la sécurité des données de vos clients ?')">Comment garantissez-vous la sécurité des données de vos clients ?</button>
-    </div>
+    function askQuestion(question) {
+        const userInput = document.getElementById('userInput');
+        userInput.value = question;
+        document.getElementById('sendButton').click();
+    }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const aiWelcomeMessage = document.createElement('div');
-            aiWelcomeMessage.textContent = "OWO : En quoi puis-je vous aider ?";
-            aiWelcomeMessage.classList.add('ai-message');
-            document.getElementById('chatBox').appendChild(aiWelcomeMessage);
-            document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
-        });
+    document.getElementById('sendButton').addEventListener('click', function() {
+        const userInput = document.getElementById('userInput');
+        const chatBox = document.getElementById('chatBox');
+        const typingIndicator = document.getElementById('typingIndicator');
 
-        const qaPairs = [
-            {
-                question: "Quels types de services financiers proposez-vous ?",
-                answer: "Nous offrons une gamme complète de services financiers, y compris la gestion de patrimoine, le courtage en prêts, le conseil en investissement, l’assurance vie et la planification fiscale."
-            },
-            {
-                question: "Comment évaluez-vous la situation financière d'un client ?",
-                answer: "Nous effectuons une analyse complète de la situation financière de nos clients en examinant leurs revenus, leurs dépenses, leurs actifs et leurs passifs."
-            },
-            {
-                question: "Quelles sont vos tarifications pour les services de conseil financier ?",
-                answer: "Nos frais varient en fonction des services fournis et nous nous engageons à être transparents sur toutes nos tarifications."
-            },
-            {
-                question: "Offrez-vous des services de planification fiscale ?",
-                answer: "Oui, nous proposons des services de planification fiscale pour aider nos clients à optimiser leur situation fiscale."
-            },
-            {
-                question: "Comment garantissez-vous la sécurité des données de vos clients ?",
-                answer: "Nous mettons en œuvre des mesures de sécurité robustes, y compris le cryptage des données."
-            }
-        ];
-
-        function askQuestion(question) {
-            const userInput = document.getElementById('userInput');
-            userInput.value = question;
-            document.getElementById('sendButton').click();
+        if (userInput.value.trim() === '') {
+            return;
         }
 
-        document.getElementById('sendButton').addEventListener('click', function() {
-            const userInput = document.getElementById('userInput');
-            const chatBox = document.getElementById('chatBox');
-            const typingIndicator = document.getElementById('typingIndicator');
+        const userMessage = document.createElement('div');
+        userMessage.textContent = userInput.value;
+        userMessage.classList.add('user-message');
+        chatBox.appendChild(userMessage);
+        userInput.value = '';
 
-            if (userInput.value.trim() === '') {
-                return;
-            }
+        typingIndicator.style.display = 'flex';
+        typingIndicator.innerHTML = '<span> Votre assistant OWO est en train de taper</span>';
+        for (let i = 0; i < 3; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            typingIndicator.appendChild(dot);
+        }
 
-            const userMessage = document.createElement('div');
-            userMessage.textContent = userInput.value;
-            userMessage.classList.add('user-message');
-            chatBox.appendChild(userMessage);
-            userInput.value = '';
-
-            typingIndicator.style.display = 'flex';
-            typingIndicator.innerHTML = '<span> Votre assistant OWO est en train de taper</span>';
-            for (let i = 0; i < 3; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                typingIndicator.appendChild(dot);
-            }
-
-            function typeWriter(text, element, delay) {
-                let index = 0;
-                element.textContent = '';
-                const typing = setInterval(() => {
-                    if (index < text.length) {
-                        element.textContent += text.charAt(index);
-                        index++;
-                    } else {
-                        clearInterval(typing);
-                    }
-                }, delay);
-            }
-
-            setTimeout(() => {
-                typingIndicator.style.display = 'none';
-                const aiMessage = document.createElement('div');
-                aiMessage.classList.add('ai-message');
-
-                const userQuery = userMessage.textContent.toLowerCase();
-                const matchedPair = qaPairs.find(pair => 
-                    userQuery.includes(pair.question.toLowerCase())
-                );
-
-                let responseText;
-                if (matchedPair) {
-                    responseText = matchedPair.answer;
+        function typeWriter(text, element, delay) {
+            let index = 0;
+            element.textContent = '';
+            const typing = setInterval(() => {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
                 } else {
-                    responseText = "Assistant OWO : Merci à vous pour l'intérêt que vous nous portez !"; 
+                    clearInterval(typing);
                 }
+            }, delay);
+        }
 
-                typeWriter(responseText, aiMessage, 100);
-                chatBox.appendChild(aiMessage);
-                chatBox.scrollTop = chatBox.scrollHeight; 
-            }, 1000);
-        });
+        setTimeout(() => {
+            typingIndicator.style.display = 'none';
+            const aiMessage = document.createElement('div');
+            aiMessage.classList.add('ai-message');
 
-        document.getElementById('userInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('sendButton').click(); 
+            const userQuery = userMessage.textContent.toLowerCase();
+            const matchedPair = qaPairs.find(pair => 
+                userQuery.includes(pair.question.toLowerCase())
+            );
+
+            let responseText;
+            if (matchedPair) {
+                responseText = matchedPair.answer;
+            } else if (gratitudeExpressions.some(expr => userQuery.includes(expr))) {
+                responseText = "OWO : Je vous remercie pour votre appréciation ! N'hésitez pas à poser d'autres questions.";
+            } else {
+                responseText = "Assistant OWO : Désolé, cette question n'est pas dans ma base de données.";
             }
-        });
-    </script>
-</body>
-</html>
+
+            typeWriter(responseText, aiMessage, 100);
+            chatBox.appendChild(aiMessage);
+            chatBox.scrollTop = chatBox.scrollHeight; 
+        }, 1000);
+    });
+
+    document.getElementById('userInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            document.getElementById('sendButton').click(); 
+        }
+    });
+</script>
+
 
 
 
