@@ -6,7 +6,6 @@
     <title>Chatbot IA</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        
         .question-button {
             background-color: #007BFF;
             color: white;
@@ -18,6 +17,23 @@
         }
         .question-button:hover {
             background-color: #0056b3;
+        }
+        .typing {
+            display: flex;
+            align-items: center;
+        }
+        .dot {
+            height: 10px;
+            width: 10px;
+            background-color: gray;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: blink 1.5s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
@@ -43,123 +59,128 @@
         <button class="question-button" onclick="askQuestion('Offrez-vous des services de planification fiscale ?')">Offrez-vous des services de planification fiscale ?</button>
         <button class="question-button" onclick="askQuestion('Comment garantissez-vous la sécurité des données de vos clients ?')">Comment garantissez-vous la sécurité des données de vos clients ?</button>
     </div>
-
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM entièrement chargé et analysé.");
+
+            const chatBox = document.getElementById('chatBox');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+            const typingIndicator = document.getElementById('typingIndicator');
+
+            if (!chatBox || !userInput || !sendButton || !typingIndicator) {
+                console.error("Un ou plusieurs éléments n'ont pas été trouvés.");
+                return;
+            }
+
             const aiWelcomeMessage = document.createElement('div');
             aiWelcomeMessage.textContent = "OWO : En quoi puis-je vous aider ?";
             aiWelcomeMessage.classList.add('ai-message');
-            document.getElementById('chatBox').appendChild(aiWelcomeMessage);
-            document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
-        });
-    
-        const qaPairs = [
-            {
-                question: "Quels types de services financiers proposez-vous ?",
-                answer: "Nous offrons une gamme complète de services financiers, y compris la gestion de patrimoine, le courtage en prêts, le conseil en investissement, l’assurance vie et la planification fiscale."
-            },
-            {
-                question: "Comment évaluez-vous la situation financière d'un client ?",
-                answer: "Nous effectuons une analyse complète de la situation financière de nos clients en examinant leurs revenus, leurs dépenses, leurs actifs et leurs passifs."
-            },
-            {
-                question: "Quelles sont vos tarifications pour les services de conseil financier ?",
-                answer: "Nos frais varient en fonction des services fournis et nous nous engageons à être transparents sur toutes nos tarifications."
-            },
-            {
-                question: "Offrez-vous des services de planification fiscale ?",
-                answer: "Oui, nous proposons des services de planification fiscale pour aider nos clients à optimiser leur situation fiscale."
-            },
-            {
-                question: "Comment garantissez-vous la sécurité des données de vos clients ?",
-                answer: "Nous mettons en œuvre des mesures de sécurité robustes, y compris le cryptage des données."
-            }
-        ];
-    
-        const gratitudeExpressions = [
-            "merci",
-            "je vous remercie",
-            "merci beaucoup",
-            "c'est gentil",
-            "merci pour votre aide",
-            "je suis reconnaissant",
-            "merci pour cela"
-        ];
-    
-        function askQuestion(question) {
-            const userInput = document.getElementById('userInput');
-            userInput.value = question;
-            document.getElementById('sendButton').click();
-        }
-    
-        document.getElementById('sendButton').addEventListener('click', function() {
-            const userInput = document.getElementById('userInput');
-            const chatBox = document.getElementById('chatBox');
-            const typingIndicator = document.getElementById('typingIndicator');
-    
-            if (userInput.value.trim() === '') {
-                return;
-            }
-    
-            const userMessage = document.createElement('div');
-            userMessage.textContent = userInput.value;
-            userMessage.classList.add('user-message');
-            chatBox.appendChild(userMessage);
-            userInput.value = '';
-    
-            typingIndicator.style.display = 'flex';
-            typingIndicator.innerHTML = '<span> Votre assistant OWO est en train de taper</span>';
-            for (let i = 0; i < 3; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                typingIndicator.appendChild(dot);
-            }
-    
-            function typeWriter(text, element, delay) {
-                let index = 0;
-                element.textContent = '';
-                const typing = setInterval(() => {
-                    if (index < text.length) {
-                        element.textContent += text.charAt(index);
-                        index++;
-                    } else {
-                        clearInterval(typing);
-                    }
-                }, delay);
-            }
-    
-            setTimeout(() => {
-                typingIndicator.style.display = 'none';
-                const aiMessage = document.createElement('div');
-                aiMessage.classList.add('ai-message');
-    
-                const userQuery = userMessage.textContent.toLowerCase();
-                const matchedPair = qaPairs.find(pair => 
-                    userQuery.includes(pair.question.toLowerCase())
-                );
-    
-                let responseText;
-                if (matchedPair) {
-                    responseText = matchedPair.answer;
-                } else if (gratitudeExpressions.some(expr => userQuery.includes(expr))) {
-                    responseText = "OWO : Je vous remercie pour votre appréciation ! N'hésitez pas à poser d'autres questions.";
-                } else {
-                    responseText = "Assistant OWO : Désolé, cette question n'est pas dans ma base de données.";
+            chatBox.appendChild(aiWelcomeMessage);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const qaPairs = [
+                {
+                    question: "Quels types de services financiers proposez-vous ?",
+                    answer: "Nous offrons une gamme complète de services financiers, y compris la gestion de patrimoine, le courtage en prêts, le conseil en investissement, l’assurance vie et la planification fiscale."
+                },
+                {
+                    question: "Comment évaluez-vous la situation financière d'un client ?",
+                    answer: "Nous effectuons une analyse complète de la situation financière de nos clients en examinant leurs revenus, leurs dépenses, leurs actifs et leurs passifs."
+                },
+                {
+                    question: "Quelles sont vos tarifications pour les services de conseil financier ?",
+                    answer: "Nos frais varient en fonction des services fournis et nous nous engageons à être transparents sur toutes nos tarifications."
+                },
+                {
+                    question: "Offrez-vous des services de planification fiscale ?",
+                    answer: "Oui, nous proposons des services de planification fiscale pour aider nos clients à optimiser leur situation fiscale."
+                },
+                {
+                    question: "Comment garantissez-vous la sécurité des données de vos clients ?",
+                    answer: "Nous mettons en œuvre des mesures de sécurité robustes, y compris le cryptage des données."
                 }
-    
-                typeWriter(responseText, aiMessage, 100);
-                chatBox.appendChild(aiMessage);
-                chatBox.scrollTop = chatBox.scrollHeight; 
-            }, 1000);
-        });
-    
-        document.getElementById('userInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('sendButton').click(); 
+            ];
+
+            const gratitudeExpressions = [
+                "merci",
+                "je vous remercie",
+                "merci beaucoup",
+                "c'est gentil",
+                "merci pour votre aide",
+                "je suis reconnaissant",
+                "merci pour cela"
+            ];
+
+            function askQuestion(question) {
+                userInput.value = question;
+                sendButton.click();
             }
+
+            sendButton.addEventListener('click', function() {
+                if (userInput.value.trim() === '') {
+                    return;
+                }
+
+                const userMessage = document.createElement('div');
+                userMessage.textContent = userInput.value;
+                userMessage.classList.add('user-message');
+                chatBox.appendChild(userMessage);
+                userInput.value = '';
+
+                typingIndicator.style.display = 'flex';
+                typingIndicator.innerHTML = '<span> Votre assistant OWO est en train de taper</span>';
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    typingIndicator.appendChild(dot);
+                }
+
+                function typeWriter(text, element, delay) {
+                    let index = 0;
+                    element.textContent = '';
+                    const typing = setInterval(() => {
+                        if (index < text.length) {
+                            element.textContent += text.charAt(index);
+                            index++;
+                        } else {
+                            clearInterval(typing);
+                        }
+                    }, delay);
+                }
+
+                setTimeout(() => {
+                    typingIndicator.style.display = 'none';
+                    const aiMessage = document.createElement('div');
+                    aiMessage.classList.add('ai-message');
+
+                    const userQuery = userMessage.textContent.toLowerCase();
+                    const matchedPair = qaPairs.find(pair => 
+                        userQuery.includes(pair.question.toLowerCase())
+                    );
+
+                    let responseText;
+                    if (matchedPair) {
+                        responseText = matchedPair.answer;
+                    } else if (gratitudeExpressions.some(expr => userQuery.includes(expr))) {
+                        responseText = "OWO : Je vous remercie pour votre appréciation ! N'hésitez pas à poser d'autres questions.";
+                    } else {
+                        responseText = "Assistant OWO : Désolé, cette question n'est pas dans ma base de données.";
+                    }
+
+                    typeWriter(responseText, aiMessage, 100);
+                    chatBox.appendChild(aiMessage);
+                    chatBox.scrollTop = chatBox.scrollHeight; 
+                }, 1000);
+            });
+
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendButton.click(); 
+                }
+            });
         });
     </script>
-    
 </body>
 </html>
 
