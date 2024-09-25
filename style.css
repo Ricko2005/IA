@@ -94,7 +94,6 @@ h1{
 align-items: center;
 color: #000;
 }
-   /* Ajoutez quelques styles pour les questions */
    .question-button {
     background-color: #007BFF;
     color: white;
@@ -110,7 +109,7 @@ color: #000;
 
 @media only screen and (max-width: 400px) {
     .chat-container {
-        width: 344px;
+        width: 344px !important;
         margin: auto;
         background: white;
         border-radius: 5px;
